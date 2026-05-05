@@ -10,7 +10,7 @@ public class NodeLL <T>{
 	private NodeLL<T> prox; // ponteiro para o próximo NodeLL (nó) da lista ligada
 	// NodeLL(): construtor vazio
 	public NodeLL() {
-		this(null, null);
+		this(null, null); 
 	}
 	// NodeLL(T dado, NodeLL<T> prox): construtor com parâmetros
 	public NodeLL(T dado, NodeLL<T> prox) {

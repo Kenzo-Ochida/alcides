@@ -1,95 +1,130 @@
 import java.util.Scanner;
-
 public class TesteABB {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Criacao de uma ABB de obj da class func (Chave: id)");
-
+        ABB<Integer> abb1 = new ABB<Integer>();
+        System.out.println("\nSistema MackBemVindo\n");
         ABB<Funcionario> abb2 = new ABB<Funcionario>();
+        
         int opc;
-
         do {
-            System.out.println("\n Menu de opcao: \n" +
-                    "1. cadastrar funcionario\n" +
-                    "2. mostrar dados de todos os funcionarios cadastrados\n" +
-                    "3. Mostrar gastos com salarios dos funcionarios\n" +
-                    "4. Mostrar total de funcionarios de determinado ano\n" +
-                    "5. Mostrar quantidade de funcionarios de determinado sexo\n" +
-                    "6. Mostrar dados de funcionarios a partir de certa idade\n" +
-                    "7. Simular cadastro de funcionario\n" +
-                    "8. sair");
-
-            System.out.println("Escolha uma opcao: ");
+            System.out.println("\nOpcoes:");
+            System.out.println("1. Cadastrar funcionario");
+            System.out.println("2. mostrar dados de todos os funcionários cadastrados");
+            System.out.println("3. Mostrar gastos com salários dos funcionários");
+            System.out.println("4. mostrar total de funcionários de determinado sexo");
+            System.out.println("5. mostrar quantidade de funcionários de certa categoria");
+            System.out.println("6. Mostrar dados de funcionários a partir de certa idade");
+            System.out.println("7. simular cadastro de funcionários");
+            System.out.println("8. Sair");
+            System.out.print("Escolha uma opcao: ");
             opc = sc.nextInt();
 
-            if (opc == 1) {
-        
+            switch (opc) {
+                case 1:
+                    Funcionario func = cadastrar();
+                    abb2.inserir(func);
+                    break;
+                case 2:
+                    abb2.emOrdem2();
+                    break;
+                case 3:
+                    double total = abb2.totalSalarios(abb2.getRaiz());
+                    System.out.println("total gasto com salarios: " + total);
+                    break;
+                case 4:
+                    System.out.print("informe o sexo (M/F): ");
+                    char sexo = sc.next().charAt(0);
 
-                System.out.println("--- Cadastro de Funcionário ---");
-                
-                System.out.print("ID: ");
-                int id = sc.nextInt();
-                
-                System.out.print("Categoria (um caractere): ");
-                char categoria = sc.next().charAt(0);
-                
-                sc.nextLine();
-                
-                System.out.print("Nome: ");
-                String nome = sc.nextLine();
-                
-                System.out.print("Cargo: ");
-                String cargo = sc.nextLine();
-                
-                System.out.print("Sexo (M/F): ");
-                char sexo = sc.next().charAt(0);
-                
-                System.out.print("Idade: ");
-                int idade = sc.nextInt();
-                
-                System.out.print("Salário: ");
-                float salario = sc.nextFloat();
+                    int totalSexo = abb2.contarPorSexo(abb2.getRaiz(), sexo);
+                    System.out.println("total de funcionários do sexo " + sexo + ": " + totalSexo);
+                    break;
+                case 5:
+                    System.out.print("Informe a categoria (P/O/H): ");
+                    char categoria = sc.next().charAt(0);
 
-                
-                Funcionario novoFunc = new Funcionario(id, categoria, nome, cargo, sexo, idade, salario);
-                
-        
-                abb2.inserir(novoFunc);
-                
-                System.out.println("Funcionário cadastrado com sucesso!");
-            } 
-            else if (opc == 2) {
+                    int totalCat = abb2.contarPorCategoria(abb2.getRaiz(), categoria);
+                    System.out.println("Total da categoria " + categoria + ": " + totalCat);
+                    break;
+                case 6:
+                    System.out.print("Informe a idade mínima: ");
+                    int idade = sc.nextInt();
 
-                System.out.println("       LISTA DE FUNCIONÁRIOS CADASTRADOS (ORDEM DE ID)        ");
+                    System.out.println("\nFuncionários com idade >= " + idade + ":");
+                    abb2.mostrarPorIdade(abb2.getRaiz(), idade);
+                    break;
+                case 7:
+                    abb2.setRaiz(null);
+                    simularCadastro(abb2);
+                    System.out.println("\nfuncionários cadastradoss");
+                    break;
+                case 8:
+                    System.out.print("Vai sair mesmo ?(S): ");
+                    char resp = sc.next().charAt(0);
 
-                
-                if (abb2.isEmpty()) {
-                    System.out.println("A árvore está vazia! Cadastre funcionários primeiro.");
-                } else {
-                    // Chama o método emOrdem2 da sua classe ABB fornecida
-                    abb2.emOrdem2(); 
-                }
-                
-
+                    if (resp == 'S' || resp == 's') {
+                        System.out.println("Tchau Tchau...");
+                    }
+                    break;
+                default:
+                    System.out.println("opcao invaldia");
+                    break;
             }
-            else if (opc == 7) {
-                abb2.inserir(new Funcionario(106, 'H', "Fernanda Lima", "Engenheira DevOps", 'F', 28, 8900.00f));
-                abb2.inserir(new Funcionario(107, 'P', "Gabriel Santos", "Desenvolvedor Mobile", 'M', 22, 4500.00f));
-                abb2.inserir(new Funcionario(108, 'P', "Helena Souza", "Product Owner", 'F', 34, 12500.00f));
-                abb2.inserir(new Funcionario(109, 'H', "Igor Oliveira", "Analista de Segurança", 'M', 30, 7200.00f));
-                abb2.inserir(new Funcionario(110, 'P', "Juliana Paes", "Arquiteta de Software", 'F', 38, 15000.00f));
-                abb2.inserir(new Funcionario(111, 'P', "Kevin Lopes", "Estagiário de QA", 'M', 20, 2100.00f));
-                abb2.inserir(new Funcionario(112, 'P', "Larissa Manoela", "Scrum Master", 'F', 27, 9800.00f));
-                abb2.inserir(new Funcionario(113, 'H', "Marcos Frota", "Suporte Nível 2", 'M', 45, 5000.00f));
-                abb2.inserir(new Funcionario(114, 'H', "Natália Guimarães", "Engenheira de Dados", 'F', 32, 11200.00f));
-                abb2.inserir(new Funcionario(115, 'H', "Otávio Mesquita", "Administrador de Redes", 'M', 41, 6800.00f));
-
-                System.out.println("Mais 10 funcionários simulados inseridos com sucesso!");
-            }
-
         } while (opc != 8);
+    }
 
-        sc.close();
+    public static Funcionario cadastrar() {
+        Scanner a = new Scanner(System.in);
+        System.out.println("\n--- CADASTRO DE FUNCIONÁRIO ---");
+
+        System.out.print("ID (Inteiro único): ");
+        int id = a.nextInt();
+
+        System.out.print("Categoria (P-Presencial, O-Home Office, H-Híbrido): ");
+        char categoria = a.next().toUpperCase().charAt(0);
+        a.nextLine();
+
+        System.out.print("Nome: ");
+        String nome = a.nextLine();
+
+        System.out.print("Cargo: ");
+        String cargo = a.nextLine();
+
+        System.out.print("Sexo (F/M): ");
+        char sexo = a.next().toUpperCase().charAt(0);
+
+        System.out.print("Idade: ");
+        int idade = a.nextInt();
+
+        System.out.print("Salário: ");
+        double salario = a.nextDouble();
+
+        return new Funcionario(id, categoria, nome, cargo, sexo, idade, salario);
+    }
+    public static void simularCadastro(ABB<Funcionario> arvore) {
+  
+        arvore.inserir(new Funcionario(1, 'S', "Arthur", "Cloud Architect", 'M', 45, 12500.00));
+        arvore.inserir(new Funcionario(2, 'D', "Helena", "UX Researcher", 'F', 29, 6500.00));
+        arvore.inserir(new Funcionario(3, 'E', "Caio", "Fullstack Developer", 'M', 31, 8200.00));
+        arvore.inserir(new Funcionario(4, 'S', "Isadora", "Agile Coach", 'F', 38, 9500.00));
+        arvore.inserir(new Funcionario(5, 'D', "Bruno", "Site Reliability Engineer", 'M', 34, 11000.00));
+        arvore.inserir(new Funcionario(6, 'E', "Lorena", "Engineering Manager", 'F', 40, 15000.00));
+        arvore.inserir(new Funcionario(7, 'S', "Renato", "Cybersecurity Analyst", 'M', 33, 7800.00));
+        arvore.inserir(new Funcionario(8, 'D', "Sophia", "Data Engineer", 'F', 27, 8900.00));
+        arvore.inserir(new Funcionario(9, 'E', "Igor", "Blockchain Developer", 'M', 36, 13000.00));
+        arvore.inserir(new Funcionario(10, 'S', "Gabriela", "Product Manager", 'F', 35, 11500.00));
+        arvore.inserir(new Funcionario(11, 'D', "Samuel", "Android Specialist", 'M', 26, 5800.00));
+        arvore.inserir(new Funcionario(12, 'E', "Maya", "AI Research Scientist", 'F', 30, 14200.00));
+        arvore.inserir(new Funcionario(13, 'S', "Hugo", "Infrastructure Lead", 'M', 42, 10800.00));
+        arvore.inserir(new Funcionario(14, 'D', "Clara", "Business Intelligence", 'F', 39, 7200.00));
+        arvore.inserir(new Funcionario(15, 'E', "Nicolas", "Computer Vision Eng.", 'M', 32, 9800.00));
+        arvore.inserir(new Funcionario(16, 'S', "Bia", "Visual Designer", 'F', 25, 4200.00));
+        arvore.inserir(new Funcionario(17, 'D', "André", "Backend Engineer", 'M', 37, 8500.00));
+        arvore.inserir(new Funcionario(18, 'E', "Larissa", "DevSecOps", 'F', 31, 9300.00));
+        arvore.inserir(new Funcionario(19, 'S', "Vitor", "Solutions Architect", 'M', 44, 16000.00));
+        arvore.inserir(new Funcionario(20, 'D', "Tati", "QA Automation", 'F', 28, 5500.00));
+    
     }
 }
+    
